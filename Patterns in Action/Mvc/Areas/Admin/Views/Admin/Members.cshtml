@@ -1,0 +1,69 @@
+﻿@model Mvc.Areas.Admin.Models.MembersModel
+@{
+    ViewBag.Title = "Members";
+}
+
+<h1>Members</h1>
+
+<div style="color:#000;background:#c0ebf2;"> @Model.Message </div>
+
+<a style="margin: 0 0 10px 500px;" href="/members/0">Add new Member</a>
+<div class="sortmessage">Click on headers to sort</div>
+
+<form>
+    <table class="table-list" style="width: 630px;">
+        <tr class="table-header">
+            <td class="tac" style="width: 50px;">@Html.Sorter(Model.Members, "Id", "MemberId", "asc")  </td>
+            <td class="tal">@Html.Sorter(Model.Members, "Email", "Email", "asc") </td>
+            <td class="tal">@Html.Sorter(Model.Members, "Company", "CompanyName", "asc") </td>
+            <td class="tac">Edit</td>
+            <td class="tac">Delete</td>
+        </tr>
+
+        @{
+            int count = 0;
+            foreach (var item in Model.Members.List)
+            { 
+
+            <tr class='@(++count % 2 == 0 ? "tablerow" : "tablerow-alt")' >
+                <td class="tac">@item.MemberId </td>
+                <td class="tal">@item.Email</td>
+                <td class="tal">@item.CompanyName</td>
+                <td class="tac"><a href="/members/@item.MemberId">Edit</a></td>
+                <td class="tac"><a id="delete@(item.MemberId)" href="javascript:void(0);">Delete</a></td>
+            </tr>
+            }
+        }
+    </table>
+
+    @Html.Hidden("sort", Model.Members.Sort)
+    @Html.Hidden("order", Model.Members.Order)
+
+
+</form>
+
+<br />
+<br />
+<br />
+<br />
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $("a[id^='delete']").on("click", function () {
+                if (confirm("Are you sure you wish to delete this record?")) {
+                    var id = $(this).attr("id").substr(6);
+
+                    var form = $('form');
+
+                    form.get(0).setAttribute('action', '/members/delete/' + id);
+                    form.submit();
+                }
+                return false;
+            });
+        });
+
+    </script>
+}

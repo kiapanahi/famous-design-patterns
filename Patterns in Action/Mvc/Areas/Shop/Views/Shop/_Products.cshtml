@@ -1,0 +1,32 @@
+﻿@model Mvc.Code.SortedList<Mvc.Areas.Shop.Models.ProductModel>
+
+<div class="sortmessage">Click on headers to sort</div>
+
+<table class="table-list">
+    <tr class="table-header">
+        <td class="tac">@Html.Sorter(Model, "Id", "ProductId", "asc")  </td>
+        <td class="tal">@Html.Sorter(Model, "Product Name", "ProductName", "asc") </td>
+        <td class="tal">@Html.Sorter(Model, "Weight", "Weight", "asc") </td>
+        <td class="tar">@Html.Sorter(Model, "Price", "UnitPrice", "asc") </td>
+        <td class="tac">Details</td>
+    </tr>
+
+    @{ 
+        int count = 0;
+        foreach (var item in Model.List)
+        { 
+        <tr class='@(++count % 2 == 0 ? "tablerow" : "tablerow-alt")' >
+            <td class="tac">@item.ProductId </td>
+            <td class="tal">@item.ProductName </td>
+            <td class="tal">@item.Weight </td>
+            <td class="tar">@item.UnitPrice </td>
+            <td class="tac"><a href="/products/@item.ProductId">View</a></td>
+        </tr>
+        }
+    }
+</table>
+
+
+@Html.Hidden("sort", Model.Sort)
+@Html.Hidden("order", Model.Order)
+

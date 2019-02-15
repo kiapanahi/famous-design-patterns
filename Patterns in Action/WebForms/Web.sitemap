@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <!-- site map for Patterns-in-Action ASP.NET WebForms 4.5 reference application -->
+  <siteMapNode url="/" title="home"  description=""  >
+    <siteMapNode url="shop" title="shopping"  description="Your shopping starts here">
+      <siteMapNode url="shop/products" title="product catalog"  description="">
+        <siteMapNode url="shop/products/{id}" title="product details" description="" />
+      </siteMapNode>
+      <siteMapNode url="shop/search" title="search products"  description="" />
+    </siteMapNode>
+    <siteMapNode url="admin" title="administration" description="">
+      <siteMapNode url="admin/members" title="members" description="">
+        <siteMapNode url="admin/members/{id}" title="member details"  description="" />
+      </siteMapNode>
+      <siteMapNode url="admin/members/orders" title="orders" description="" >
+        <siteMapNode url="admin/members/{id}/orders/{id}" title="member orders"  description="" >
+          <siteMapNode url="admin/members/{id}/orders/{id}/details" title="line items"  description="" />
+        </siteMapNode>
+      </siteMapNode>
+    </siteMapNode>
+    <siteMapNode url="error" title="error" description="">
+    </siteMapNode>
+    <siteMapNode url="login" title="login" description="">
+    </siteMapNode>
+    <siteMapNode url="logout" title="logout" description="">
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

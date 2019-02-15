@@ -1,0 +1,85 @@
+﻿@model Mvc.Areas.Admin.Models.MemberModel
+
+@{
+    ViewBag.Title = "Member";
+}
+
+<ul class="headline">
+    <li class="headline-left">
+        <h1>Member Details</h1>
+    </li>
+    <li class="headline-right"><a href="JavaScript:history.go(-1);">&lt; back to member list</a></li>
+</ul>
+
+<img class="customer-image" src='/images/members/large/@(Model.PhotoId).jpg' alt="customer image" />
+
+<form method="post">
+    @Html.Hidden("MemberId", Model.MemberId)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.MemberId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MemberId)
+    </div>
+    <div class="clear"></div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Email)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Email, new { @class = "text-box" })
+    </div>
+    <div class="clear"></div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.CompanyName)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.CompanyName, new { @class = "text-box" })
+    </div>
+    <div class="clear"></div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.City)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.City, new { @class = "text-box" })
+    </div>
+    <div class="clear"></div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Country)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Country, new { @class = "text-box" })
+    </div>
+    <div class="clear"></div>
+
+    <div class="button-box">
+        <input type="submit" value="Save" />&nbsp;&nbsp;
+                <input id="cancel" type="submit" value="Cancel" />
+    </div>
+</form>
+
+<br />
+
+@Html.ValidationSummary()
+
+<br />
+<br />
+<br />
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+
+            $("#cancel").on("click", function () {
+                window.location = '/members';
+                return false;
+            });
+        });
+    </script>
+
+}

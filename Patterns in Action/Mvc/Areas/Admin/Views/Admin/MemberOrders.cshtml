@@ -1,0 +1,44 @@
+﻿@model Mvc.Areas.Admin.Models.MemberOrdersModel
+
+@{
+    ViewBag.Title = "MemberOrders";
+}
+
+<ul class="headline">
+    <li class="headline-left">
+        <h1>Orders for: <span style="color: #000; font-size: 12pt;">@Model.Member.CompanyName </span></h1>
+    </li>
+    <li class="headline-right"><a href="/orders">< back to orders</a></li>
+</ul>
+<div class="clear"></div>
+
+<table class="table-list">
+    <tr class="table-header">
+        <td class="tac">Order Id</td>
+        <td class="tac">Order Date</td>
+        <td class="tac">Required Date</td>
+        <td class="tar">Shipping</td>
+        <td class="tac">Items</td>
+    </tr>
+
+    @{
+        int count = 0;
+        foreach (var item in Model.Orders)
+        { 
+
+        <tr class='@(++count % 2 == 0 ? "tablerow" : "tablerow-alt")' >
+            <td class="tac">@item.OrderId </td>
+            <td class="tac">@item.OrderDate</td>
+            <td class="tac">@item.RequiredDate </td>
+            <td class="tar">@item.Freight </td>
+            <td class="tac"><a href="/members/@(Model.Member.MemberId)/orders/@(item.OrderId)">Details</a></td>
+        </tr>
+        }
+    }
+
+</table>
+
+<br />
+<br />
+<br />
+<br />

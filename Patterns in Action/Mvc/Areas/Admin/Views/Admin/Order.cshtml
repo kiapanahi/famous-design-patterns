@@ -1,0 +1,45 @@
+﻿@model Mvc.Areas.Admin.Models.OrderDetailsModel
+
+@{
+    ViewBag.Title = "Order";
+}
+
+<ul class="headline">
+    <li class="headline-left">
+        <h1>Order Details</h1>
+    </li>
+    <li class="headline-right"><a href="JavaScript:history.go(-1);" style="float: right;">&lt; back</a></li>
+</ul>
+<div class="clear"></div>
+
+
+<h3>@Html.Display("OrderDate") </h3>
+<br />
+
+<table class="table-list">
+    <tr class="table-header">
+        <td class="tal">Product</td>
+        <td class="tac">Quantity</td>
+        <td class="tar">Unit Price </td>
+        <td class="tar">Discount </td>
+    </tr>
+
+    @{
+        int count = 0;
+        foreach (var item in Model.OrderDetails)
+        { 
+        <tr class='@(++count % 2 == 0 ? "tablerow" : "tablerow-alt")' >
+            <td class="tal">@item.ProductName </td>
+            <td class="tac">@item.Quantity </td>
+            <td class="tar">@item.UnitPrice </td>
+            <td class="tar">@item.Discount  </td>
+        </tr>
+        }
+    }
+
+</table>
+
+<br />
+<br />
+<br />
+<br />

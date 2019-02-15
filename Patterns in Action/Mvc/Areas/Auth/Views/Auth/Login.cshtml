@@ -1,0 +1,47 @@
+﻿@model Mvc.Areas.Auth.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h1>Login</h1>
+
+<p>
+    To access the administration area you need to login as an Admin.
+    <br />
+    Admin credentials are: &nbsp;email: <span style="color: #333; font-style: italic;">debbie@company.com</span>,
+    password: <span style="color: #333; font-style: italic;">secret123</span>.
+</p>
+<br />
+
+<form method="post">
+    <div>
+        <div class="login-heading">please login</div>
+
+        <div class="login-label">
+            @Html.LabelFor(m => m.Email)
+        </div>
+        <div class="login-field">
+            @Html.TextBoxFor(m => m.Email, new { @class = "text-box" })
+        </div>
+        <div class="clear"></div>
+
+        <div class="login-label">
+            @Html.LabelFor(m => m.Password)
+        </div>
+        <div class="login-field">
+            @Html.PasswordFor(m => m.Password, new { @class = "text-box" })
+        </div>
+        <div class="clear"></div>
+
+        <div class="login-box">
+            <input type="submit" value="Submit" class="button" />
+        </div>
+    </div>
+</form>
+
+<br />
+@Html.ValidationSummary(true)
+<br />
+
+

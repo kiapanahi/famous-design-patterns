@@ -1,0 +1,43 @@
+﻿@model Mvc.Areas.Admin.Models.OrdersModel
+
+@{
+    ViewBag.Title = "Members and Orders";
+}
+
+<h1>Orders By Member</h1>
+
+@Html.ValidationSummary()
+
+<form>
+    <div class="sortmessage">Click on headers to sort</div>
+
+    <table class="table-list" style="width: 660px;">
+        <tr class="table-header">
+            <td class="tac">@Html.Sorter(Model.Members, "Id", "MemberId", "asc") </td>
+            <td class="tal">@Html.Sorter(Model.Members, "Member Name", "CompanyName", "asc") </td>
+            <td class="tac">@Html.Sorter(Model.Members, "Country", "Country", "asc") </td>
+            <td class="tac">@Html.Sorter(Model.Members, "# Orders", "NumOrders", "asc") </td>
+            <td class="tac">@Html.Sorter(Model.Members, "Last Order", "LastOrderDate", "asc") </td>
+            <td class="tac">View</td>
+        </tr>
+        @{
+            int count = 0;
+            foreach (var item in Model.Members.List)
+            { 
+
+            <tr class='@(++count % 2 == 0 ? "tablerow" : "tablerow-alt")' >
+                <td class="tac">@item.MemberId </td>
+                <td class="tal">@item.CompanyName</td>
+                <td class="tac">@item.Country </td>
+                <td class="tac">@item.NumOrders </td>
+                <td class="tac">@item.LastOrderDate </td>
+                <td class="tac"><a href="/members/@(item.MemberId)/orders" >View</a></td>
+            </tr>
+            }
+        }
+    </table>
+
+    @Html.Hidden("sort", Model.Members.Sort)
+    @Html.Hidden("order", Model.Members.Order)
+
+</form>

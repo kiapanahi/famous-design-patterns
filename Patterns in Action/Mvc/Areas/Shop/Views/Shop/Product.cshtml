@@ -1,0 +1,96 @@
+﻿@model Mvc.Areas.Shop.Models.ProductModel
+
+@{
+    ViewBag.Title = "Product";
+}
+
+<!-- Content header and back button -->
+
+<ul class="headline">
+    <li class="headline-left">
+        <h1>Product Details</h1>
+    </li>
+    <li class="headline-right"><a href="JavaScript:history.go(-1);">&lt; back to previous page</a></li>
+</ul>
+
+<table>
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.CategoryName)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(m => m.CategoryName)
+            </div>
+            <div class="clear"></div>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.ProductName)
+            </div>
+            <div class="editor-field">
+                @Html.DisplayFor(m => m.ProductName)
+            </div>
+            <div class="clear"></div>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.UnitPrice)
+            </div>
+            <div class="editor-field">
+                @Html.DisplayFor(m => m.UnitPrice)
+            </div>
+            <div class="clear"></div>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Weight)
+            </div>
+            <div class="editor-field">
+                @Html.DisplayFor(m => m.Weight)
+            </div>
+            <div class="clear"></div>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.UnitsInStock)
+            </div>
+            <div class="editor-field">
+                @Html.DisplayFor(m => m.UnitsInStock)
+            </div>
+            <div class="clear"></div>
+
+        </td>
+        <td>
+            <img src='/images/products/@(Model.ProductId).jpg' class="floatright" alt="" style="width:90px;height:90px;" /></td>
+    </tr>
+
+</table>
+
+
+<br />
+<br />
+
+<form method="post">
+
+    <input name="quantity" id="quantity" type="text" value="1" maxlength="2" style="width: 30px; margin: 0 5px 0 150px;" />
+    <input type="submit" id="button" value=" Add to Cart " />
+
+    @Html.Hidden("ProductId", Model.ProductId)
+
+</form>
+
+<br />
+@Html.ValidationSummary()
+<br />
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $("#button").on("click", function () {
+                alert("Shopping cart is not implemented in Patterns in Action 4.5. \nFor a full implementation see the Spark 4.5 app.");
+                return false;
+            });
+        });
+
+    </script>
+}
+
+
+

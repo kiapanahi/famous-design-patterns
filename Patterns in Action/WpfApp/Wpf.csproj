@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E41B333D-514F-46A8-8ABA-B769632A9CB0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WpfApp</RootNamespace>
+    <AssemblyName>WpfApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=2.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Commands\ActionCommands.cs" />
+    <Compile Include="Controls\DropDownButton.cs" />
+    <Compile Include="Converters\MemberImageConverter.cs" />
+    <Compile Include="Converters\MaxLengthConverter.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\OrderDetailModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\Provider\IProvider.cs" />
+    <Compile Include="Models\Provider\Provider.cs" />
+    <Compile Include="ViewModels\CommandModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="WindowAbout.xaml.cs">
+      <DependentUpon>WindowAbout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowMember.xaml.cs">
+      <DependentUpon>WindowMember.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowLogin.xaml.cs">
+      <DependentUpon>WindowLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowMain.xaml.cs">
+      <DependentUpon>WindowMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowOrders.xaml.cs">
+      <DependentUpon>WindowOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="WindowAbout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowMember.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ActionService\ActionService.csproj">
+      <Project>{f0aafa38-e246-417c-82b0-e279bb6da532}</Project>
+      <Name>ActionService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj">
+      <Project>{8ec74780-ad73-42a9-ba50-4c1e48347501}</Project>
+      <Name>BusinessObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\Action4.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Action4_log.ldf">
+      <DependentUpon>Action4.mdf</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\Members\Large\0.jpg" />
+    <Resource Include="Images\Members\Large\72.jpg" />
+    <Resource Include="Images\Members\Large\10.jpg" />
+    <Resource Include="Images\Members\Large\11.jpg" />
+    <Resource Include="Images\Members\Large\12.jpg" />
+    <Resource Include="Images\Members\Large\13.jpg" />
+    <Resource Include="Images\Members\Large\14.jpg" />
+    <Resource Include="Images\Members\Large\15.jpg" />
+    <Resource Include="Images\Members\Large\16.jpg" />
+    <Resource Include="Images\Members\Large\17.jpg" />
+    <Resource Include="Images\Members\Large\18.jpg" />
+    <Resource Include="Images\Members\Large\19.jpg" />
+    <Resource Include="Images\Members\Large\2.jpg" />
+    <Resource Include="Images\Members\Large\20.jpg" />
+    <Resource Include="Images\Members\Large\21.jpg" />
+    <Resource Include="Images\Members\Large\22.jpg" />
+    <Resource Include="Images\Members\Large\23.jpg" />
+    <Resource Include="Images\Members\Large\24.jpg" />
+    <Resource Include="Images\Members\Large\25.jpg" />
+    <Resource Include="Images\Members\Large\26.jpg" />
+    <Resource Include="Images\Members\Large\27.jpg" />
+    <Resource Include="Images\Members\Large\28.jpg" />
+    <Resource Include="Images\Members\Large\29.jpg" />
+    <Resource Include="Images\Members\Large\3.jpg" />
+    <Resource Include="Images\Members\Large\30.jpg" />
+    <Resource Include="Images\Members\Large\31.jpg" />
+    <Resource Include="Images\Members\Large\32.jpg" />
+    <Resource Include="Images\Members\Large\33.jpg" />
+    <Resource Include="Images\Members\Large\34.jpg" />
+    <Resource Include="Images\Members\Large\35.jpg" />
+    <Resource Include="Images\Members\Large\36.jpg" />
+    <Resource Include="Images\Members\Large\37.jpg" />
+    <Resource Include="Images\Members\Large\38.jpg" />
+    <Resource Include="Images\Members\Large\39.jpg" />
+    <Resource Include="Images\Members\Large\4.jpg" />
+    <Resource Include="Images\Members\Large\40.jpg" />
+    <Resource Include="Images\Members\Large\41.jpg" />
+    <Resource Include="Images\Members\Large\42.jpg" />
+    <Resource Include="Images\Members\Large\43.jpg" />
+    <Resource Include="Images\Members\Large\44.jpg" />
+    <Resource Include="Images\Members\Large\45.jpg" />
+    <Resource Include="Images\Members\Large\46.jpg" />
+    <Resource Include="Images\Members\Large\47.jpg" />
+    <Resource Include="Images\Members\Large\48.jpg" />
+    <Resource Include="Images\Members\Large\49.jpg" />
+    <Resource Include="Images\Members\Large\5.jpg" />
+    <Resource Include="Images\Members\Large\50.jpg" />
+    <Resource Include="Images\Members\Large\51.jpg" />
+    <Resource Include="Images\Members\Large\52.jpg" />
+    <Resource Include="Images\Members\Large\53.jpg" />
+    <Resource Include="Images\Members\Large\54.jpg" />
+    <Resource Include="Images\Members\Large\55.jpg" />
+    <Resource Include="Images\Members\Large\56.jpg" />
+    <Resource Include="Images\Members\Large\57.jpg" />
+    <Resource Include="Images\Members\Large\58.jpg" />
+    <Resource Include="Images\Members\Large\59.jpg" />
+    <Resource Include="Images\Members\Large\6.jpg" />
+    <Resource Include="Images\Members\Large\60.jpg" />
+    <Resource Include="Images\Members\Large\61.jpg" />
+    <Resource Include="Images\Members\Large\62.jpg" />
+    <Resource Include="Images\Members\Large\63.jpg" />
+    <Resource Include="Images\Members\Large\64.jpg" />
+    <Resource Include="Images\Members\Large\65.jpg" />
+    <Resource Include="Images\Members\Large\66.jpg" />
+    <Resource Include="Images\Members\Large\67.jpg" />
+    <Resource Include="Images\Members\Large\68.jpg" />
+    <Resource Include="Images\Members\Large\69.jpg" />
+    <Resource Include="Images\Members\Large\7.jpg" />
+    <Resource Include="Images\Members\Large\70.jpg" />
+    <Resource Include="Images\Members\Large\71.jpg" />
+    <Resource Include="Images\Members\Large\1.jpg" />
+    <Resource Include="Images\Members\Large\73.jpg" />
+    <Resource Include="Images\Members\Large\74.jpg" />
+    <Resource Include="Images\Members\Large\75.jpg" />
+    <Resource Include="Images\Members\Large\76.jpg" />
+    <Resource Include="Images\Members\Large\77.jpg" />
+    <Resource Include="Images\Members\Large\78.jpg" />
+    <Resource Include="Images\Members\Large\79.jpg" />
+    <Resource Include="Images\Members\Large\8.jpg" />
+    <Resource Include="Images\Members\Large\80.jpg" />
+    <Resource Include="Images\Members\Large\81.jpg" />
+    <Resource Include="Images\Members\Large\82.jpg" />
+    <Resource Include="Images\Members\Large\83.jpg" />
+    <Resource Include="Images\Members\Large\84.jpg" />
+    <Resource Include="Images\Members\Large\85.jpg" />
+    <Resource Include="Images\Members\Large\86.jpg" />
+    <Resource Include="Images\Members\Large\87.jpg" />
+    <Resource Include="Images\Members\Large\88.jpg" />
+    <Resource Include="Images\Members\Large\89.jpg" />
+    <Resource Include="Images\Members\Large\9.jpg" />
+    <Resource Include="Images\Members\Large\90.jpg" />
+    <Resource Include="Images\Members\Large\91.jpg" />
+    <Resource Include="Images\Members\Large\anon.jpg" />
+    <Resource Include="Images\Members\Small\0.jpg" />
+    <Content Include="Images\Members\Small\72.jpg" />
+    <Resource Include="Images\Members\Small\10.jpg" />
+    <Resource Include="Images\Members\Small\11.jpg" />
+    <Resource Include="Images\Members\Small\12.jpg" />
+    <Resource Include="Images\Members\Small\13.jpg" />
+    <Resource Include="Images\Members\Small\14.jpg" />
+    <Resource Include="Images\Members\Small\15.jpg" />
+    <Resource Include="Images\Members\Small\16.jpg" />
+    <Resource Include="Images\Members\Small\17.jpg" />
+    <Resource Include="Images\Members\Small\18.jpg" />
+    <Resource Include="Images\Members\Small\19.jpg" />
+    <Resource Include="Images\Members\Small\2.jpg" />
+    <Resource Include="Images\Members\Small\20.jpg" />
+    <Resource Include="Images\Members\Small\21.jpg" />
+    <Resource Include="Images\Members\Small\22.jpg" />
+    <Resource Include="Images\Members\Small\23.jpg" />
+    <Resource Include="Images\Members\Small\24.jpg" />
+    <Resource Include="Images\Members\Small\25.jpg" />
+    <Resource Include="Images\Members\Small\26.jpg" />
+    <Resource Include="Images\Members\Small\27.jpg" />
+    <Resource Include="Images\Members\Small\28.jpg" />
+    <Resource Include="Images\Members\Small\29.jpg" />
+    <Resource Include="Images\Members\Small\3.jpg" />
+    <Resource Include="Images\Members\Small\30.jpg" />
+    <Resource Include="Images\Members\Small\31.jpg" />
+    <Resource Include="Images\Members\Small\32.jpg" />
+    <Resource Include="Images\Members\Small\33.jpg" />
+    <Resource Include="Images\Members\Small\34.jpg" />
+    <Resource Include="Images\Members\Small\35.jpg" />
+    <Resource Include="Images\Members\Small\36.jpg" />
+    <Resource Include="Images\Members\Small\37.jpg" />
+    <Resource Include="Images\Members\Small\38.jpg" />
+    <Resource Include="Images\Members\Small\39.jpg" />
+    <Resource Include="Images\Members\Small\4.jpg" />
+    <Resource Include="Images\Members\Small\40.jpg" />
+    <Resource Include="Images\Members\Small\41.jpg" />
+    <Resource Include="Images\Members\Small\42.jpg" />
+    <Resource Include="Images\Members\Small\43.jpg" />
+    <Resource Include="Images\Members\Small\44.jpg" />
+    <Resource Include="Images\Members\Small\45.jpg" />
+    <Resource Include="Images\Members\Small\46.jpg" />
+    <Resource Include="Images\Members\Small\47.jpg" />
+    <Resource Include="Images\Members\Small\48.jpg" />
+    <Resource Include="Images\Members\Small\49.jpg" />
+    <Resource Include="Images\Members\Small\5.jpg" />
+    <Resource Include="Images\Members\Small\50.jpg" />
+    <Resource Include="Images\Members\Small\51.jpg" />
+    <Resource Include="Images\Members\Small\52.jpg" />
+    <Resource Include="Images\Members\Small\53.jpg" />
+    <Resource Include="Images\Members\Small\54.jpg" />
+    <Resource Include="Images\Members\Small\55.jpg" />
+    <Resource Include="Images\Members\Small\56.jpg" />
+    <Resource Include="Images\Members\Small\57.jpg" />
+    <Resource Include="Images\Members\Small\58.jpg" />
+    <Resource Include="Images\Members\Small\59.jpg" />
+    <Resource Include="Images\Members\Small\6.jpg" />
+    <Resource Include="Images\Members\Small\60.jpg" />
+    <Resource Include="Images\Members\Small\61.jpg" />
+    <Resource Include="Images\Members\Small\62.jpg" />
+    <Resource Include="Images\Members\Small\63.jpg" />
+    <Resource Include="Images\Members\Small\64.jpg" />
+    <Resource Include="Images\Members\Small\65.jpg" />
+    <Resource Include="Images\Members\Small\66.jpg" />
+    <Resource Include="Images\Members\Small\67.jpg" />
+    <Resource Include="Images\Members\Small\68.jpg" />
+    <Resource Include="Images\Members\Small\69.jpg" />
+    <Resource Include="Images\Members\Small\7.jpg" />
+    <Resource Include="Images\Members\Small\70.jpg" />
+    <Resource Include="Images\Members\Small\71.jpg" />
+    <Resource Include="Images\Members\Small\1.jpg" />
+    <Resource Include="Images\Members\Small\73.jpg" />
+    <Resource Include="Images\Members\Small\74.jpg" />
+    <Resource Include="Images\Members\Small\75.jpg" />
+    <Resource Include="Images\Members\Small\76.jpg" />
+    <Resource Include="Images\Members\Small\77.jpg" />
+    <Resource Include="Images\Members\Small\78.jpg" />
+    <Resource Include="Images\Members\Small\79.jpg" />
+    <Resource Include="Images\Members\Small\8.jpg" />
+    <Resource Include="Images\Members\Small\80.jpg" />
+    <Resource Include="Images\Members\Small\81.jpg" />
+    <Resource Include="Images\Members\Small\82.jpg" />
+    <Resource Include="Images\Members\Small\83.jpg" />
+    <Resource Include="Images\Members\Small\84.jpg" />
+    <Resource Include="Images\Members\Small\85.jpg" />
+    <Resource Include="Images\Members\Small\86.jpg" />
+    <Resource Include="Images\Members\Small\87.jpg" />
+    <Resource Include="Images\Members\Small\88.jpg" />
+    <Resource Include="Images\Members\Small\89.jpg" />
+    <Resource Include="Images\Members\Small\9.jpg" />
+    <Resource Include="Images\Members\Small\90.jpg" />
+    <Resource Include="Images\Members\Small\91.jpg" />
+    <Resource Include="Images\Members\Small\anon.jpg" />
+    <Resource Include="Images\Menus\Add.png" />
+    <Resource Include="Images\Menus\Copy.png" />
+    <Resource Include="Images\Menus\Cut.png" />
+    <Resource Include="Images\Menus\Delete.png" />
+    <Resource Include="Images\Menus\Edit.png" />
+    <Resource Include="Images\Menus\Help.png" />
+    <Resource Include="Images\Menus\Login.png" />
+    <Resource Include="Images\Menus\Logout.png" />
+    <Resource Include="Images\Menus\Paste.png" />
+    <Resource Include="Images\Menus\View.png" />
+    <Resource Include="Images\WPFIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

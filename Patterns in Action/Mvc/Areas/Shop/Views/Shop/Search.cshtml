@@ -1,0 +1,29 @@
+﻿@model Mvc.Areas.Shop.Models.SearchModel
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<h1>Search</h1>
+
+<form method="post">
+    Product Name: @Html.TextBox("ProductName", Model.ProductName, new { style = "width:100px;font-size:11pt;" })  &nbsp;&nbsp;&nbsp;
+    Price range: @Html.DropDownList("Ranges", Model.PriceRanges, new { style = "width:130px;font-size:11pt;" })
+
+    &nbsp;&nbsp;<input type="submit" value=" Find " />
+    &nbsp;&nbsp;@Html.ActionLink("reset", "Search")
+
+    <hr />
+    <br />
+    @if (Model.Products.List.Count > 0)
+    {
+        @Html.Partial("_Products", Model.Products)
+    }
+    else
+    {
+        @: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No products found...
+    }
+
+</form>
+
+
