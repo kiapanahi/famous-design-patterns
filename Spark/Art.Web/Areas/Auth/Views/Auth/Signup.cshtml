@@ -1,0 +1,100 @@
+﻿@model Art.Web.Areas.Auth.Models.SignupModel
+
+@{
+    ViewBag.Title = "Sign up";
+}
+
+<div class="row row-first box-noborder">
+    <div class="span6">
+        <div style="padding: 160px 0 0 150px;">
+            <form method="post" action="/external/login">
+                
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="provider" value="Facebook" />
+                <button id="facebook" class="btn btn-primary"><i class="icon-white icon-user"></i> Connect with Facebook</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="color: #bbb; font-family: 'Times New Roman'; font-style: italic; font-size: 13pt;">OR</span>
+            </form>
+        </div>
+    </div>
+    <div class="span6">
+
+        <div style="padding: 40px 40px 80px 0;">
+            @Html.ValidationSummary(true)
+
+            <form method="post" action="/signup">
+
+                @Html.AntiForgeryToken()
+                <fieldset>
+                    <legend>Sign Up</legend>
+                    <ol class="unstyled">
+                        <li>
+                            @Html.TextBoxFor(m => m.FirstName, new { placeholder = "First Name" })
+                            @Html.ValidationMessageFor(m => m.FirstName, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.LastName, new { placeholder = "Last Name" })
+                            @Html.ValidationMessageFor(m => m.LastName, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.City, new { placeholder = "City" })
+                            @Html.ValidationMessageFor(m => m.City, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.Country, new { placeholder = "Country" })
+                            @Html.ValidationMessageFor(m => m.Country, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.Email, new { placeholder = "Email" })
+                            @Html.ValidationMessageFor(m => m.Email, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.PasswordFor(m => m.Password, new { placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => m.Password, string.Empty, new { @class = "invalid" })
+                        </li>
+                    </ol>
+                </fieldset>
+                <input class="btn" type="submit" value="Sign up" />&nbsp; &nbsp;&nbsp;
+                @Html.ActionLink("Log in", "Login") if you already have an account.
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        // to learn more about JavaScript and jQuery Design Patterns please
+        // see our "Pro JavaScript and jQuery Patterns" package which is available 
+        // on our website at www.dofactory.com
+
+
+        // ** namespace pattern 
+        // ** revealing module pattern
+        // ** singleton pattern
+        Patterns.namespace("Art").Signup = (function () {
+
+            var activatePage = function () {
+                $("#facebook").on("clicked", function () {
+                    $(this).parent("form").submit();
+                });
+            };
+
+            var start = function () {
+                activatePage();
+            };
+
+            // the revealing part of the revealing module pattern
+            return { start: start };
+        })();
+
+        $(function () {
+
+            // ** facade pattern
+
+            var signup = Patterns.Art.Signup;
+            signup.start();
+        });
+    </script>
+}

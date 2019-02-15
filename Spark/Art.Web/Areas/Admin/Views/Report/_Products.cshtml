@@ -1,0 +1,38 @@
+﻿@model Art.Web.Areas.Admin.Models.ReportProductsModel
+
+<div id="products" style="padding-left: 50px;">
+
+    @Html.Pager(Model)
+
+    <table class="table table-noline">
+        <thead>
+            <tr>
+                <th colspan="2">Art Work</th>
+                <th>Price</th>
+                <th style="text-align:center;"># Sold</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <img src="/Images/thumbnails/@product.Image" class="img-small" alt="">
+                    </td>
+                    <td style="padding-left: 5px; width: 300px;">
+                        @product.Title<br />
+                        <i>by</i> @product.ArtistName
+                    </td>
+                    <td>
+                        @string.Format("{0:C0}", product.Price)
+                    </td>
+                    <td style="text-align:center;">
+                        @product.QuantitySold
+                    </td>
+                </tr>  
+            }
+        </tbody>
+    </table>
+
+    @Html.Pager(Model)
+</div>

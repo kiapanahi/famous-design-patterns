@@ -1,0 +1,232 @@
+﻿@model Art.Web.Areas.Admin.Models.DashboardModel
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="row row-first box-noborder">
+    <div class="span12">
+        <div class="row">
+            <div class="span3">
+                <h2 style="padding: 20px 0 0 24px;">Dashboard</h2>
+            </div>
+            <div class="span5">
+                <div style="padding: 30px 0 0 40px;">
+                    <button id="link-users" type="button" class="btn active"><i class="icon-user"></i>&nbsp;Users</button>&nbsp;&nbsp;
+                    <button id="link-sales" type="button" class="btn"><i class="icon-signal"></i>&nbsp;Sales</button>&nbsp;&nbsp;
+                </div>
+            </div>
+            <div class="span3" style="padding-top: 26px;">
+                Stats for the first 4 months since going to production
+            </div>
+        </div>
+    </div>
+    <div class="span12">
+        <div class="row">
+            <div class="span3">
+                <div style="margin: 20px 20px 40px 20px; padding: 15px 10px 20px 20px; background: #f5f5f5; height: 300px;">
+                    <span style="font-size: 9pt;">Click on buttons at the top to view cumulative user registrations and cumulative product sales charts.</span>
+                </div>
+            </div>
+            <div class="span9">
+                <div style="padding: 10px 20px 0 0px;">
+                    <h4 style="padding-left:40px;" id="chart-title"><span>Cumulative User registrations by week</span></h4>
+                    <div id="plotarea" style="width: 600px; height: 300px;"></div>
+                    
+                    <input type="hidden" id="users-data" value='@Html.Raw(Model.UsersData)' />
+                    <input type="hidden" id="users-ticks" value='@Html.Raw(Model.UsersTicks)' />
+                    <input type="hidden" id="sales-data" value='@Html.Raw(Model.SalesData)' />
+                    <input type="hidden" id="sales-ticks" value='@Html.Raw(Model.SalesTicks)' />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span12">
+        <div class="row">
+            <div class="span3">
+                <div style="margin: 40px 20px 40px 20px; padding: 15px 15px 20px 20px; background: #f5f5f5; height: 300px;">
+                    <span style="font-size: 9pt;">Hover mouse cursor over pie slices to view country percentages. Click on slice will show alert box with data.</span>
+                </div>
+            </div>
+            <div class="span9">
+                <div style="padding: 30px 20px 0 0;">
+                    <h4>Member demographics</h4>
+
+                    <div id="piearea" style="width: 300px; height: 200px;"></div>
+                    <div id="hover" style="padding: 20px 0 0 60px; visibility: hidden;"></div>
+                    <input type="hidden" id="demographic-data" value='@Html.Raw(Model.Demographics)' />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+@section Scripts
+{
+    <script src="/Scripts/jquery.flot.js"></script>
+    <script src="/Scripts/jquery.flot.pie.js"></script>
+
+    <script type="text/javascript">
+
+        // to learn more about JavaScript and jQuery Design Patterns please
+        // see our "Pro JavaScript and jQuery Patterns" package which is available 
+        // on our website at www.dofactory.com
+
+
+        // ** namespace pattern 
+        // ** revealing module pattern
+        // ** singleton pattern
+        Patterns.namespace("Art").Dashboard = (function () {
+
+            // ** immediate function idiom 
+            var users = (function () {
+                // ** lazy load pattern (using closure)
+                var data;
+                var ticks;
+                var show = function () {
+                    // ** truthy/falsy idiom
+                    // ** || idiom
+                    data = data || $.parseJSON($("#users-data").val());
+                    ticks = ticks || $.parseJSON($("#users-ticks").val());
+                    showPlot(data, ticks);
+                }
+                return { show: show };
+            })();
+
+            // ** immediate function idiom 
+            var sales = (function () {
+                // ** lazy load pattern (using closure)
+                var data;
+                var ticks;
+                var show = function () {
+                    // ** truthy/falsy idiom
+                    // ** || idiom
+                    data = data || $.parseJSON($("#sales-data").val());
+                    ticks = ticks || $.parseJSON($("#sales-ticks").val());
+                    
+                    showPlot(data, ticks);
+                }
+                return { show: show };
+            })();
+
+            // ** strategy pattern
+            var strategy = users;  // default strategy
+
+            var showPlot = function (data, ticks) {
+
+                // ** option hash idiom
+                var options = {
+                    legend: { position: "nw" },
+                    lines: { show: true },
+                    points: { show: true },
+                    xaxis: { ticks: ticks },
+                    grid: { backgroundColor: { colors: ["#fff", "#f5f6f7"] } }
+                };
+
+                $.plot($("#plotarea"), data, options);
+            }
+
+            var pieHover = function (event, pos, obj) {
+
+                // ** truthy/falsy idiom
+                // ** && idiom
+                if (obj && obj.series) {
+                    percent = parseFloat(obj.series.percent).toFixed(2);
+                    $("#hover").html('<span style="font-weight: bold;">' + obj.series.label + ' (' + percent + '%)</span>');
+                }
+            }
+
+            var pieClick = function (event, pos, obj) {
+
+                // ** truthy/falsy idiom
+                // ** && idiom
+                if (obj && obj.series) {
+                    percent = parseFloat(obj.series.percent).toFixed(2);
+                    alert('' + obj.series.label + ': ' + percent + '%');
+                }
+            }
+
+            var activatePie = function () {
+
+                var piedata = $.parseJSON($("#demographic-data").val());
+                var $piearea = $("#piearea");
+
+                // ** option hash idiom
+                $.plot($piearea, piedata,
+                    {
+                        series: {
+                            pie: {
+                                show: true
+                            }
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true
+                        }
+                    });
+
+                // ** chaining pattern
+                $piearea.bind("plothover", pieHover)
+                        .bind("plotclick", pieClick)
+                        .hover(function () { $("#hover").css("visibility", "visible"); },
+                               function () { $("#hover").css("visibility", "hidden"); }
+                );
+            };
+
+            var showLineChart = function () {
+                strategy.show();
+            }
+
+            var activatePlots = function () {
+
+                // ** observer pattern
+                $("#link-users").on('click', function () {
+                    $('[id^="link-"]').removeClass("active");
+                    $("#link-users").addClass("active");
+                    $("#chart-title span").text("Cumulative User registrations by week");
+                    // ** strategy pattern
+                    strategy = users;
+                    showLineChart();
+                });
+               
+                $("#link-sales").on('click', function () {
+                    $('[id^="link-"]').removeClass("active");
+                    $("#link-sales").addClass("active");
+                    $("#chart-title span").text("Cumulative Sales in $ by week");
+                    // ** strategy pattern
+                    strategy = sales;
+                    showLineChart();
+                });
+
+                showLineChart();
+            };
+
+            var start = function () {
+                activatePlots();
+                activatePie();
+            };
+
+            // the revealing part of the revealing module pattern
+            return { start: start };
+        })();
+
+        $(function () {
+
+            // check browser support for HTML5 canvas 
+
+            // ** double !! idiom
+            var supportsCanvas = !!document.createElement("canvas").getContext;
+            if (!supportsCanvas) {
+                // ** chained pattern
+                $("#message").css("color", "red").html("It seems that your browser does not support HTML canvas. Please upgrade to a more recent version.");
+                return;
+            }
+
+            // ** facade pattern
+            var dashboard = Patterns.Art.Dashboard;
+            dashboard.start();
+        });
+
+    </script>
+}

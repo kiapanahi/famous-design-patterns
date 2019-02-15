@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Art Shop - @ViewBag.Title</title>
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    @Styles.Render("~/content/css")
+    @Styles.Render("~/content/themes/base/css")
+    @Scripts.Render("~/scripts/modernizr")
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <div class="container container-title">
+                <div class="row">
+                    <div class="span6">
+                        <a class="brand" href='/'>
+                            <img src='/images/artlogo.png' alt="Art Shop" width="300" height="65" />
+                        </a>
+                    </div>
+                    <div class="span6">
+                        <ul class="nav nav-pills pull-right nav-auth">
+                            @if (!CurrentUser.IsAuthenticated)
+                            {
+                                <li><a href="/signup">Sign up</a></li>
+                                <li><a href="/login">Login</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="/account">Hi @CurrentUser.FirstName</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-menu">
+            <div class="container container-menu">
+                <div class="row">
+                    <div class="span10">
+                        <ul class="nav nav-pills nav-menu">
+                            <li><a href="/">HOME</a></li>
+                            <li><a href="/products">SHOP</a></li>
+                            @if (CurrentUser.IsAdmin)
+                            {
+                                <li><a href="/users">ADMIN</a></li>
+                                <li><a href="/reports">REPORTS</a></li>
+                                <li><a href="/dashboard">DASHBOARD</a></li>
+                                <li><a href="/adhoc">AD HOC</a></li>
+                            }
+                            <li><a href="/about">ABOUT</a></li>
+                        </ul>
+                    </div>
+                    <div class="span2">
+                        <input id="cartcount" type="hidden" value="@CurrentCart.ItemCount" />
+                        <ul class="nav nav-pills pull-right cart">
+                            @Html.Cart(CurrentCart.ItemCount)
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-submenu">
+        </div>
+    </header>
+    <section>
+        <div class="container" id="content">
+            @Html.Partial("_Alert")
+
+            @RenderBody()
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="span12">
+                <div class="footer">&copy; @DateTime.Now.Year - Art Shop, Inc.</div>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/scripts/artshop")
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

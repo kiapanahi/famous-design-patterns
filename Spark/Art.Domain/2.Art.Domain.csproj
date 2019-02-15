@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3E5150B3-2F15-4451-89AF-E7B70ED1A096}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Art.Domain</RootNamespace>
+    <AssemblyName>Art.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\ArtData.cs" />
+    <Compile Include="Data\Data.partial.cs" />
+    <Compile Include="Domain\Entity.partial.cs" />
+    <Compile Include="Domain\Error.cs" />
+    <Compile Include="Repository\Artists.cs" />
+    <Compile Include="Repository\Repository.partial.cs" />
+    <Compile Include="UnitOfWork\UnitOfWork.partial.cs" />
+    <Compile Include="_Spark\Core.cs" />
+    <Compile Include="_Spark\Data.cs" />
+    <Compile Include="_Spark\Domain.cs" />
+    <Compile Include="_Spark\Repository.cs" />
+    <Compile Include="_Spark\UnitOfWork.cs" />
+    <Compile Include="_Spark\Generator\DomainGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Domain\Artist.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\Cart.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\CartItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\Order.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\OrderDetail.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\OrderNumber.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\Product.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\Rating.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\User.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\CartItems.cs" />
+    <Compile Include="Repository\Carts.cs" />
+    <Compile Include="Repository\Errors.cs" />
+    <Compile Include="Repository\OrderDetails.cs" />
+    <Compile Include="Repository\OrderNumbers.cs" />
+    <Compile Include="Repository\Orders.cs" />
+    <Compile Include="Repository\Products.cs" />
+    <Compile Include="Repository\Ratings.cs" />
+    <Compile Include="Repository\Users.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_Spark\Generator\DomainGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

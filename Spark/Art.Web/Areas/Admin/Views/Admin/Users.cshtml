@@ -1,0 +1,209 @@
+﻿@model Art.Web.Areas.Admin.Models.AdminUsersModel
+
+@{
+    ViewBag.Title = "Admin";
+    if (ViewBag.Layout == "No")
+    {
+        Layout = null;
+    }
+}
+
+<div class="row row-first box-noborder">
+    <div class="span12">
+        <div class="row">
+            <div class="span7">
+                <div class="admin-controls">
+
+                    <form>
+
+                        @Html.AntiForgeryToken()
+
+                        <input id="page" name="page" type="hidden" value="@Model.Page" />
+                        <div class="row">
+                            <div class="span3">
+                                <h2 style="padding-bottom: 0px;">Admin</h2>
+                            </div>
+                            <div class="span3" style="text-align: left; margin-top: 10px;">
+                                Sort by&nbsp;
+                            <select name="sort" id="sort" style="width: 120px; margin-top: 7px;">
+                                @foreach (var key in Model.SortItems.Keys)
+                                {
+                                    var selected = (key == @Model.Sort) ? "selected" : "";
+                                    <option @selected value="@key">@Model.SortItems[key]</option>
+                                }
+                            </select>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+            <div class="span5">
+                <aside>
+                <div style="margin: 30px 30px 0 20px; padding: 0px 30px 0 20px; background: #f5f5f5;">
+                    <br />
+                    These pages support all CRUD operations,  
+                    including Create, Read, Update and Delete of users. 
+                    <br />
+                    <br />
+                </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+    <div class="span12">
+
+        @Html.Partial("_Users", Model)
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        // to learn more about JavaScript and jQuery Design Patterns please
+        // see our "Pro JavaScript and jQuery Patterns" package which is available 
+        // on our website at www.dofactory.com
+
+
+        // ** namespace pattern 
+        // ** revealing module pattern
+        // ** singleton pattern
+        Patterns.namespace("Art").Users = (function () {
+
+            var utils = Patterns.Art.Utils;
+            var history = Patterns.Art.History;
+
+            var activateHistory = function () {
+                history.init(popState);
+
+                // popState is called when browser backward of forward button is clicked
+                var popState = function (state) {
+
+                    $('#content').load(state.url + "&layout=false", function () {
+                        activateControls();
+                        activateSorter();
+                    });
+                };
+                
+                // replace state when first page is rendered.
+                // note: we remove antiforgery token 
+                var data = $($("form")[0].elements).not("input[name*='RequestVerificationToken']").serialize()
+                var state = "?" + data;
+                history.replace(state);
+            };
+
+            var activateControls = function () {
+                $("select[name='sort']").on("change", function () {
+                    $("#page").val(1);
+                    $("form").submit();
+                });
+
+                $("form").submit(ajaxSubmit);
+            };
+
+            var activatePager = function () {
+
+                // pagination
+
+                $("a[name^='page']").on("click", function (event) {
+                    var parent = $(this).parent();
+                    if (parent.hasClass('disabled')) return utils.stopEvent(event);
+                    if (parent.hasClass('active')) return utils.stopEvent(event);
+
+                    var page = $(this).attr('href').substr(1);
+
+                    $("#page").val(page);
+                    $("form").submit();
+
+                    return utils.stopEvent(event);
+                });
+
+                // activate delete buttons also
+
+                $("button[name='delete']").on("click", function (event) {
+
+                    // Check of they have any orders
+
+                    var count = $(this).data("ordercount");
+                    if (count > 0) {
+                        alert("This user has placed one or more orders and cannot be deleted. To explore delete functionality create a new user (or sign up as new user) and then login as Admin to delete this new user.");
+                        return;
+                    }
+
+                    // animate row away
+                    $(this).closest("tr").fadeOut(1000, function () {
+                        $(this).remove();
+                    });
+
+                    // also post antiforgery token to server
+
+                    var token = $(':input:hidden[name*="RequestVerificationToken"]');
+                    var data = {};
+                    data[token.attr("name")] = token.val();
+
+                    var id = $(this).closest("tr").data("id");
+                    data["id"] = id;
+
+                    var options = {
+                        url: "/user",
+                        type: "DELETE",
+                        data: data
+                    };
+
+                    // CQRS: fire and forget...
+
+                    $.ajax(options);
+
+                    return utils.stopEvent(event);
+                });
+
+            };
+
+            
+
+            var ajaxSubmit = function (event) {
+
+                var $form = $(this);
+
+                // push current state to history
+                // note: we remove antiforgery token 
+                var data = $($("form")[0].elements).not("input[name*='RequestVerificationToken']").serialize()
+                var state = "?" + data;
+                history.push(state);
+
+                var options = {
+                    url: "/users",
+                    type: "GET",
+                    data: data
+                };
+
+                $.ajax(options).done(function (data) {
+                    $("#users").replaceWith(data);
+                    activatePager();
+                });
+
+                return utils.stopEvent(event);
+            };
+
+            var start = function () {
+                activateHistory();
+                activatePager();
+                activateControls();
+            };
+
+            // the revealing part of the revealing module pattern   
+            return { start: start };
+        })();
+
+
+        $(function () {
+
+            var users = Patterns.Art.Users;
+            users.start();
+
+        });
+    </script>
+}

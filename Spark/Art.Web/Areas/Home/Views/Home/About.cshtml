@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+
+@* instead of on the top we prefer lines at the bottom of each table row *@
+<style>
+.table th,
+.table td {
+  border-top: 0px;
+  border-bottom: 1px solid #dddddd;
+}
+</style>
+
+<div class="row row-first box-noborder">
+    <div class="span3">
+        <img src="/images/thumbnails/turner2.jpg" alt="" style="padding: 40px 0 0 20px;" />
+    </div>
+    <div class="span9">
+        <section>
+        <div style="padding: 20px 140px  0 0 ;line-height:16pt;">
+            <hgroup>
+            <h3>About</h3>
+            </hgroup>
+            <article>
+            <p>
+            Art Shop is a modern MVC web application built with <i>Spark 4.5</i>. <i>Spark 4.5</i> is  
+            a light-weight application platform with a layered architecture and a small set of 
+            patterns, best practices, and tools. Building apps with <i>Spark 4.5 </i> is quick and easy  
+            and the applications are attractive, easy-to-maintain, and very fast.
+            </p>
+            <p>                
+            Here is a summary of the architecture, the patterns, the practices, and the tools used.<br /><br />
+            </p>
+            <p>
+            <strong>Architecture</strong><br />
+            The architecture of Art Shop consists of 4 layers. The code resides in just 2 projects: Art.Web and Art.Domain. 
+            The Web project contains the Presentation layer and the Domain project contains the other three
+            layers: Repository, Domain, and Data.
+
+            <i>Spark 4.5</i> comes with 100% source code so you can start building 
+            apps right away with this unique platform. <br /><br />
+            A separate product called <i>PRO Design Pattern Framework 4.5</i> 
+            is available which includes a powerful code generator. This code generator automatically creates 
+            the <u>entire</u> Domain project which includes three layers: Repository, Domain, and Data.
+            The PRO version can make app development up to 4 times faster! 
+            <i>PRO Design Pattern Framework 4.5</i> is available for purchase on our website at 
+            <a href="http://www.dofactory.com/framework/pro-net-design-patterns.aspx">www.dofactory.com</a>. 
+            <br /><br />
+            </p>
+            <p>
+            <strong>Patterns</strong><br />
+            Core patterns include: MVC, Repository, Unit-of-Work, Active Record, Facade, Lazy Load, DTO, and CQRS.
+            These are fundamental to the <i>Spark 4.5</i> platform, but you'll find other patterns used 
+            throughout the application as well.<br /><br />
+
+
+            
+            In the code you will discover that JavaScript and jQuery have their own unique set of patterns and practices. 
+            In fact, without patterns JavaScript and jQuery would have a very hard time building 
+            sophisticated and interactive UIs. 
+            In case you are interested we also offer a separate product 
+            called <i>Pro JavaScript and jQuery Patterns</i> which is 
+            available for purchase on <a href="http://www.dofactory.com/framework/javascript-jquery-patterns.aspx">www.dofactory.com</a>. 
+            <br /><br />
+            </p>
+            <p>
+            <strong>Practices</strong><br />
+            Best practices include: Convention over Configuration. JSON over XML. 
+            Caching over Joins. These are discussed in the documentation.
+                <br /><br />
+            </p>
+            <p>
+            <strong>Tools</strong><br />
+            Third party tools and libraries used in <i>Spark 4.5</i> include: Bootstrap, jQuery, jQuery UI, Automapper, Json.NET, Flot, and History.js. 
+            These tools are referenced throughout the app and are also discussed in the documentation.
+            </p>
+           <br /><br /><br />
+           </article>
+        </div>
+        </section>
+    </div>
+
+</div>

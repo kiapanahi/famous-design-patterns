@@ -1,0 +1,133 @@
+﻿@model Art.Web.Areas.Admin.Models.ReportProductsModel
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<div class="row row-backlink">
+    <div class="span10">
+        <a class="back-link" href="/reports"><i class=" icon-chevron-left"></i> back to reports page</a>
+    </div>
+</div>
+
+<div class="row  box-noborder">
+    <div class="span12">
+        <div class="row">
+            <div class="span8">
+                <div class="admin-controls">
+                    <form>
+
+                        <input id="page" name="page" type="hidden" value="@Model.Page" />
+                        <div class="row">
+                            <div class="span2">
+                                <h2>Products</h2>
+                            </div>
+                            <div class="span4" style="text-align: center;margin-top:10px;">
+                                Sort by&nbsp;
+                            <select name="sort" id="sort" style="width: 120px; margin-top: 7px;">
+                                @foreach (var key in Model.SortItems.Keys)
+                                {
+                                    var selected = (key == @Model.Sort) ? "selected" : "";
+                                    <option @selected value="@key">@Model.SortItems[key]</option>
+                                }
+                            </select>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                @Html.Partial("_Products", Model)
+
+            </div>
+            <div class="span4">
+                <aside>
+                <div style="margin: 40px 40px 0 20px; padding: 20px; background: #f5f5f5;">
+                    This page demonstrates Sorting and Pagination of a product list.
+                    <br />
+                    <br />
+
+                </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+
+        // to learn more about JavaScript and jQuery Design Patterns please
+        // see our "Pro JavaScript and jQuery Patterns" package which is available 
+        // on our website at www.dofactory.com
+
+
+        // ** namespace pattern 
+        // ** revealing module pattern
+        // ** singleton pattern
+        Patterns.namespace("Art.Reports").Products = (function () {
+
+            var utils = Patterns.Art.Utils;
+
+            var activatePager = function () {
+                $("a[name^='page']").on("click", function (event) {
+                    var parent = $(this).parent();
+                    if (parent.hasClass('disabled')) return utils.stopEvent(event);
+                    if (parent.hasClass('active')) return utils.stopEvent(event);
+
+                    var page = $(this).attr('href').substr(1);
+
+                    $("#page").val(page);
+                    $("form").submit();
+
+                    return utils.stopEvent(event);
+                });
+            }
+
+            var ajaxSubmit = function (event) {
+
+                var $form = $(this);
+                var options = {
+                    url: "/reports/products",
+                    data: $form.serialize()
+                };
+
+
+                $.ajax(options).done(function (data) {
+                    $("#products").replaceWith(data);
+                    activatePager();
+                });
+
+                return utils.stopEvent(event);
+            }
+
+            var activateControls = function () {
+
+                $("form").submit(ajaxSubmit);
+
+                $("select[name='sort']")
+                    .on("change", function () {
+                        $("#page").val(1);
+                        $(this).closest("form").submit();
+                    });
+            }
+
+            var start = function () {
+                activatePager();
+                activateControls();
+            };
+
+            // the revealing part of the revealing module pattern
+            return { start: start };
+        })();
+
+
+        $(function () {
+
+            // ** facade pattern
+            products = Patterns.Art.Reports.Products;
+            products.start();
+            
+        });
+    </script>
+}

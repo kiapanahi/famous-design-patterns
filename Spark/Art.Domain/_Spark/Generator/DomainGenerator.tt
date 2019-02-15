@@ -1,0 +1,12 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<# 
+// ############################################################################
+// # 
+// # ---===> D O M A I N  C O D E  G E N E R A T O R  <===---
+// #
+// #  Note: the PRO edition of the Design Pattern Framework 4.5 comes with  
+// #  a comprehensive code-generator. It is available for purchase on our 
+// #  website at www.dofactory.com.
+// # 
+// ############################################################################
+#>

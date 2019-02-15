@@ -1,0 +1,258 @@
+﻿@model Art.Web.Areas.Shop.Models.ProductsModel
+
+@{
+    ViewBag.Title = "Shop";
+    if (ViewBag.Layout == "No")
+    {
+        Layout = null;
+    }
+}
+
+
+<div class="row row-first box-noborder" style="padding-top: 20px;">
+    <div class="span4">
+
+        <form>
+
+            <input id="pricefrom" name="pricefrom" type="hidden" value="@Model.PriceFrom" />
+            <input id="pricethru" name="pricethru" type="hidden" value="@Model.PriceThru" />
+            <input id="page" name="page" type="hidden" value="@Model.Page" />
+
+            <div style="padding: 15px 0 20px 12px;">
+                <div class="input-append">
+                    <input name="q" id="q" type="text" placeholder="Search art titles" 
+                     data-autocomplete="/search"  value="@Model.Q" />
+                    <button id="search" class="btn" type="submit"><i class="icon-search"></i></button>
+                </div>
+            </div>
+
+            <div class="box-filters">
+                <table class="table-sort">
+                    <tr>
+                        <td style="width: 75px; vertical-align: top; padding-top: 12px; font-size: 11pt;">Sort by</td>
+                        <td style="width: 170px; padding: 5px 0 0 0;">
+                            <select name="sort" style="width: 120px;">
+                                @foreach (var key in Model.SortItems.Keys)
+                                {
+                                    var selected = (key == @Model.Sort) ? "selected" : "";
+                                    <option @selected value="@key">@Model.SortItems[key]</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="row">
+                    <div class="span2" style="width: 125px;">
+
+                        <label class="filter-label">Filter by artist</label>
+                        <div class="artists">
+
+                            @foreach (var artist in Model.Artists)
+                            {
+                                var check = Model.ArtistIds.Contains<int>((int)artist.Id) ? "checked='checked'" : "";
+                                <label class="checkbox">
+                                    <input name="artistids" type="checkbox" value="@artist.Id" @check>
+                                    @artist.LastName
+                                </label>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="span2" style="width: 100px;">
+                        <div class="resetall" 
+                            @if (Model.Reset == false)
+                            {
+                               @: style="display:none;"
+                            }
+                            >
+                            <a class="closelink" href="javascript:void(0)">Reset All</a>
+                             <button type="button" class="close">&times;</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <label class="filter-label">Price range</label>
+
+                <div id="prices" class="prices"></div>
+
+                <div class="price-range">
+                    <div id="price-range"></div>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="span8">
+        @Html.Partial("_Products", Model)
+    </div>
+
+</div>
+
+@if (Layout != null)
+{
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        // to learn more about JavaScript and jQuery Design Patterns please
+        // see our "Pro JavaScript and jQuery Patterns" package which is available 
+        // on our website at www.dofactory.com
+
+
+        // ** namespace pattern 
+        // ** revealing module pattern
+        // ** singleton pattern
+        Patterns.namespace("Art").Products = (function () {
+
+            var utils = Patterns.Art.Utils;
+            var history = Patterns.Art.History;
+
+            var activatePager = function () {
+
+                $("a[name^='page']").on("click", function (event) {
+                    var parent = $(this).parent();
+                    if (parent.hasClass('disabled')) return utils.stopEvent(event);
+                    if (parent.hasClass('active')) return utils.stopEvent(event);
+
+                    var page = $(this).attr('href').substr(1);
+                    $("#page").val(page);
+                    $("form").submit();
+
+                    return utils.stopEvent(event);
+                });
+            };
+
+            var activateFilters = function () {
+
+                // activate autocomplete in search box
+                var $input = $("#q");
+                var source = $input.attr("data-autocomplete");
+                $input.autocomplete({ source: source });
+
+                // activate sort and artist filters
+                $("select[name='sort'], input[name='artistids']")
+                   .on("change", function () {
+                       $("#page").val(1);
+                       $("form").submit();
+                   });
+
+                // activate price slider 
+                $("#price-range").slider({
+                    range: true,
+                    min: 0,
+                    max: 500,
+                    values: [$('#pricefrom').val(), $('#pricethru').val()],
+                    change: function (event, ui) {
+                        $('#pricefrom').val(ui.values[0]);
+                        $('#pricethru').val(ui.values[1]);
+                        $("#page").val(1);
+                        $("form").submit();
+                    },
+                    slide: function (event, ui) {
+                        $("#prices").html("$" + ui.values[0] + " - $" + ui.values[1]);
+                    }
+                });
+
+                $("#prices").html("$" + $('#pricefrom').val() + " - $" + $('#pricethru').val());
+
+                // reset all has been clicked
+                $(".close,.closelink").on("click", function (event) {
+
+                    $('#content').load("/products?layout=false", function () {
+                        // ** zero timeout pattern
+
+                        setTimeout(function () {
+                            activatePager();
+                            activateFilters();
+
+                            // push new state to history
+                            var state = "?" + $("form").serialize();
+                            history.push(state);
+
+                        }, 0);
+                    });
+                });
+
+                $("form").submit(ajaxSubmit);
+
+            };
+
+            // submitted when filters are changed
+
+            var ajaxSubmit = function (event) {
+
+                // push current state to history
+                var state = "?" + $("form").serialize();
+                history.push(state);
+
+                $(".resetall").show();
+
+                var $form = $(this);
+                var options = {
+                    url: "/products",
+                    type: "GET",
+                    data: $form.serialize()
+                };
+
+                $.ajax(options).done(function (data) {
+                    $("#products").replaceWith(data);
+                    // ** zero timeout pattern
+
+                    setTimeout(function () {
+                        activatePager();
+                    }, 0);
+                });
+
+                return utils.stopEvent(event);
+            };
+
+            // history items
+
+            // popState is called when browser backward or forward button is clicked
+            var popState = function (state) {
+
+                $('#content').load(state.url + "&layout=false", function () {
+                    // ** zero timeout pattern
+
+                    setTimeout(function () {
+                        activatePager();
+                        activateFilters();
+                    }, 0);
+                });
+            };
+
+            history.init(popState);
+
+            // replace state when page is rendered first time
+            var state = "?" + $("form").serialize();
+            history.replace(state);
+
+            var start = function () {
+                activatePager();
+                activateFilters();
+
+            };
+
+            // the revealing part of the revealing module pattern
+            return { start: start };
+        })();
+
+
+        $(function () {
+
+            // ** facade pattern
+            var products = Patterns.Art.Products;
+            products.start();
+        });
+
+    </script>
+}
+}
+

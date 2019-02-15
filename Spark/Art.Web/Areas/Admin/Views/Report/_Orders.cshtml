@@ -1,0 +1,48 @@
+﻿@model Art.Web.Areas.Admin.Models.ReportOrdersModel
+
+<div id="orders" style="padding-left: 50px;">
+
+    @Html.Pager(Model)
+
+    <table class="table" style="width: 700px;">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Order#</th>
+                <th style="text-align: right; padding-right: 30px;">Total</th>
+                <th>Line Items</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Items)
+            {
+                <tr>
+                    <td>
+                        @string.Format("{0:d}", order.OrderDate)
+                    </td>
+                    <td>
+                        @order.UserName
+
+                    </td>
+                    <td>
+                        @order.OrderNumber
+                    </td>
+                    <td style="text-align: right; padding-right: 30px;">
+                        @string.Format("{0:C0}", order.TotalPrice)
+                    </td>
+                     <td style="text-align: center; padding-right: 30px;">
+                        @order.ItemCount
+                    </td>
+                    <td >
+                        <a href="/reports/orders/@(order.Id)" class="btn btn-small"><i class="icon-list"></i> &nbsp;Details</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </td>
+                </tr>  
+            }
+        </tbody>
+    </table>
+
+    @Html.Pager(Model)
+
+</div>

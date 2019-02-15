@@ -1,0 +1,36 @@
+﻿@model Art.Web.Areas.Shop.Models.ConfirmModel
+
+@{
+    ViewBag.Title = "Confirm";
+}
+
+<div class="row row-first box-noborder">
+
+    <div class="span4">
+        <div style="padding: 20px; height: 350px;">
+            <h3>Confirmation</h3>
+
+            @CurrentUser.FirstName, thank you for your order.<br />
+            Your order number is <strong>@Model.OrderNumber</strong>. <br />
+            Please make a note of it.<br />
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <a href="/">Click here</a> to return to the home page.<br />
+            <a href="/products">Click here</a> to return to the Art Shop.
+        </div>
+    </div>
+    <div class="span4">
+        <div style="background: #f5f5f5; margin: 40px; padding: 20px; height: 80px;">
+            Great news! We will ship your Art Work today!
+        </div>
+    </div>
+    <div class="span4">
+        <div style="margin: 20px; padding: 20px; height: 120px;">
+            <img src="/images/thumbnails/cezanne5.jpg" alt="" />
+        </div>
+    </div>
+
+</div>

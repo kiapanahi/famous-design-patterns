@@ -1,0 +1,34 @@
+﻿@model Art.Web.Areas.Admin.Models.ReportUsersModel
+
+
+<div id="users" style="padding-left: 50px;">
+
+     @Html.Pager(Model)
+
+    <table class="table" style="width: 700px;">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>City</th>
+                <th>Country</th>
+                <th style="text-align:center;">Orders</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Items)
+            {
+                <tr>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.City</td>
+                    <td>@user.Country</td>
+                    <td style="text-align:center;" >@user.OrderCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+     @Html.Pager(Model)
+
+</div>

@@ -1,0 +1,38 @@
+﻿@model Art.Web.Areas.Shop.Models.ProductsModel
+
+<div id="products" style="padding-left: 20px;">
+
+    <div class="center">
+        @Html.Pager(Model)
+    </div>
+
+    <ul class="thumbnails">
+        @if (Model.Items.Count() == 0)
+        {
+            <li>
+                <p style="font-size:15pt;padding:60px 0 0px 150px;color:#888;">No art work meets your criteria.</p>
+                <p style="padding:10px 0 10px 136px;color:#666;">Select the yellow 'Reset All' button and try again.</p>
+            </li>
+        }
+        else
+        {
+            foreach (var product in Model.Items)
+            {
+             <li>
+                <a href="/products/@product.Id" class="thumbnail" style="display:block; display:inline-block; position:relative;">
+                    <img src="/Images/thumbnails/@product.Image" width="170" height="170" alt="">
+                    <div class="text-overlay" style="height: 25px; margin-top: 148px; font-size: 12px; padding-top: 5px; font-weight: bold;">
+                        <div class="pull-left">&nbsp;&nbsp;&nbsp;@product.ArtistLastName</div>
+                        <div class="pull-right">@product.Price &nbsp; &nbsp;</div>
+
+                    </div>
+                </a>
+            </li>
+            }
+        }
+    </ul>
+
+    <div class="center">
+        @Html.Pager(Model)
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿@model Art.Web.Areas.Admin.Models.AdminNewUserModel
+
+@{
+    ViewBag.Title = "User";
+    string action = (Model.Id == null) ? "Add New User" : "Edit User";
+}
+
+<div class="row row-backlink">
+    <div class="span10">
+        <a class="back-link" href="@Model.HttpReferer"><i class=" icon-chevron-left"></i>back to user list</a>
+    </div>
+</div>
+
+<div class="row box-noborder" style="padding-top: 30px;">
+    <div class="span4">
+        <div style="margin: 30px 20px 40px 20px; padding: 20px 30px 0 20px; background: #f5f5f5; height: 300px;">
+            This page demonstrates a detail page (as in master-detail), either adding a new user or editing and existing one. 
+        </div>
+    </div>
+    <div class="span7">
+
+        <form id="user-form" method="post" action="@Url.Action("User")" >
+            <div id="user" class="user-detail">
+
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="SignupDate" value="@Model.SignupDate" />
+                <input type="hidden" name="OrderCount" value="@Model.OrderCount" />
+
+                @if (Model.Id != null)
+                {
+                    <input type="hidden" name="Email" value="@Model.Email" />
+                }
+                <fieldset>
+                    <legend>
+                        @action
+                    </legend>
+                    <ol class="unstyled">
+                        <li>
+                            @Html.TextBoxFor(m => m.FirstName, new { placeholder = "First Name" })
+                            @Html.ValidationMessageFor(m => m.FirstName, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.LastName, new { placeholder = "Last Name" })
+                            @Html.ValidationMessageFor(m => m.LastName, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.City, new { placeholder = "City" })
+                            @Html.ValidationMessageFor(m => m.City, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.Country, new { placeholder = "Country" })
+                            @Html.ValidationMessageFor(m => m.Country, string.Empty, new { @class = "invalid" })
+                        </li>
+                        @if (Model.Id == null)
+                        {
+                            <li>
+                                @Html.TextBoxFor(m => m.Email, new { placeholder = "Email" })
+                                @Html.ValidationMessageFor(m => m.Email, string.Empty, new { @class = "invalid" })
+                            </li>
+                            <li>
+                                @Html.PasswordFor(m => m.Password, new { placeholder = "Password" })
+                                @Html.ValidationMessageFor(m => m.Password, string.Empty, new { @class = "invalid" })
+                            </li>
+                        }
+                    </ol>
+                </fieldset>
+
+                <div style="padding: 0 0 30px 3px;">
+                    <input class="btn" type="submit" name="save" value="Save" />&nbsp;
+                            <a href="@Model.HttpReferer" class="btn">Cancel</a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</div>

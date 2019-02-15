@@ -1,0 +1,112 @@
+﻿@model Art.Web.Areas.Shop.Models.CheckoutModel
+
+@{
+    ViewBag.Title = "Checkout";
+}
+
+<div class="row row-backlink">
+    <div class="span10">
+        <a class="back-link" href="/cart"><i class=" icon-chevron-left"></i>back to cart</a>
+    </div>
+</div>
+
+<div class="row box-noborder" style="padding-top: 30px;">
+    <div class="span12">
+
+        <div class="row">
+            <div class="span6">
+                <div style="padding: 0 0 50px 20px;">
+
+                    <form method="post" class="form-horizontal">
+
+                        <h3>Checkout <span style="font-size: 12pt;">&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                             Total: &nbsp;&nbsp; @string.Format("{0:C0}", Model.GrandTotal) </span></h3>
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <img src="/images/cards.jpg" alt="cards accepted" />
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="inputEmail">Card Number</label>
+                            <div class="controls">
+                                <input type="text" name="CreditcardNumber">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputPassword">Card Type</label>
+                            <div class="controls">
+                                <select name="CreditcardType">
+                                    <option value="select">Select...</option>
+                                    <option value="visa">Visa</option>
+                                    <option value="mastercard">Mastercard</option>
+                                    <option value="amex">American Express</option>
+                                    <option value="discover">Discover</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputPassword">Expiration</label>
+                            <div class="controls">
+                                <select name="ExpirationMonth" style="width: 70px;">
+                                    <option value="0">--</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3 </option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+
+                                <select name="ExpirationYear" style="width: 100px;">
+                                    <option value="0">--</option>
+                                    <option value="13">2013</option>
+                                    <option value="14">2014</option>
+                                    <option value="15">2015</option>
+                                    <option value="16">2016</option>
+                                    <option value="17">2017</option>
+                                    <option value="18">2018</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="submit" class="btn btn-warning" value="Submit" />
+                            </div>
+                        </div>
+
+
+
+
+                    </form>
+                </div>
+            </div>
+            <div class="span5">
+                <aside>
+                <div style="background: #f5f5f5; padding: 20px; margin: 20px;">
+                    <p>This page accepts credit cards. However, it is simply a placeholder and card data is neither validated nor stored.</p>
+                    <p>But please go ahead and submit for processing which demonstrates a nice example of 
+                        the Unit-of-Work pattern in which 
+                        new order records are created and original cart records are deleted; all in a single transaction.</p>
+                </div>
+                </aside>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+

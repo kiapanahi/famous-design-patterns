@@ -1,0 +1,75 @@
+﻿@model Art.Web.Areas.Auth.Models.AccountModel
+
+@{
+    ViewBag.Title = "Account";
+}
+
+<div class="row row-first box-noborder">
+    <div class="span6">
+        <div style="padding: 20px;">
+            <form action="/account/change" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="Id" value="@Model.Id" />
+
+                <fieldset>
+                    <legend>Change Your Profile</legend>
+                    <ol class="unstyled">
+                        <li>
+                            @Html.TextBoxFor(m => m.FirstName, new { placeholder = "First Name" })
+                            @Html.ValidationMessageFor(m => m.FirstName, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.LastName, new { placeholder = "Last Name" })
+                            @Html.ValidationMessageFor(m => m.LastName, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.City, new { placeholder = "City" })
+                            @Html.ValidationMessageFor(m => m.City, string.Empty, new { @class = "invalid" })
+                        </li>
+                        <li>
+                            @Html.TextBoxFor(m => m.Country, new { placeholder = "Country" })
+                            @Html.ValidationMessageFor(m => m.Country, string.Empty, new { @class = "invalid" })
+                        </li>
+                   </ol>
+                </fieldset>
+                <br />
+                <input class="btn" type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+    <div class="span6">
+        <div style="padding: 20px;">
+
+            @if (!Model.IsAuthenticatedWithOAuth)
+            {
+                <form action="/account/password" method="post">
+
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="Id" value="@Model.Id" />
+
+                    <fieldset>
+                        <legend>Change Password</legend>
+                        <ol class="unstyled">
+                            <li>
+                                @Html.PasswordFor(m => m.OldPassword, new { placeholder = "Current Password" })
+                                @Html.ValidationMessageFor(m => m.OldPassword, string.Empty, new { @class = "invalid" })
+                            </li>
+                            <li>
+                                @Html.PasswordFor(m => m.NewPassword, new { placeholder = "New Password" })
+                                @Html.ValidationMessageFor(m => m.NewPassword, string.Empty, new { @class = "invalid" })
+                            </li>
+                            <li>
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = "Confirm New Password" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, string.Empty, new { @class = "invalid" })
+                            </li>
+                        </ol>
+                    </fieldset>
+                    <br />
+                    <input class="btn" type="submit" value="Submit" />
+                </form>
+            }
+        </div>
+    </div>
+</div>
+

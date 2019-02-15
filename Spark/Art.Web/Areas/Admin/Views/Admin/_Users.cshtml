@@ -1,0 +1,40 @@
+﻿@model Art.Web.Areas.Admin.Models.AdminUsersModel
+
+<div id="users" style="padding-left: 20px;">
+
+     @Html.Pager(Model)
+
+    <table class="table" style="width: 880px;">
+        <thead>
+            <tr>
+                <th>Sign up</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Orders</th>
+                <th style="text-align:right;width:165px;"><a href="/user" class="btn btn-small"><i class="icon-user"></i> &nbsp;Add New</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Items)
+            {
+                <tr data-id="@user.Id">
+                    <td>@(((DateTime)user.SignupDate).ToString("d"))</td>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.City</td>
+                    <td>@user.Country</td>
+                    <td style="padding-left:16px;">&nbsp;@user.OrderCount</td>
+                    <td style="text-align:right;">
+                        <a href="/user/@(user.Id)" class="btn btn-small"><i class="icon-pencil"></i> &nbsp;Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button name="delete" data-ordercount="@user.OrderCount" class="btn btn-small" type="button"><i class="icon-trash"></i> &nbsp;Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+     @Html.Pager(Model)
+
+</div>

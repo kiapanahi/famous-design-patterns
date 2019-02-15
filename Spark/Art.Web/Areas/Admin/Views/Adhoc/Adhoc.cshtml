@@ -1,0 +1,195 @@
+﻿@model Art.Web.Areas.Admin.Models.AdhocModel
+
+@{
+    ViewBag.Title = "Adhoc Queries";
+}
+
+<div class="row row-first box-noborder">
+    <div class="span12">
+        <div class="row">
+
+            <div class="span3">
+                <h3 >Ad-hoc Queries</h3>
+                <div style="padding: 10px 5px 5px 5px;">
+                    Tables and Columns
+                    </div>
+                <div style="padding: 5px 5px 35px 10px; ">
+                    @foreach (var table in Model.Schema)
+                    {
+                        <a id="table@(table.Key)" href="javascript:void(0)">@table.Key</a><br />
+                        <div id="columns@(table.Key)" class="column-list" style="padding: 0 0 0 10px;font-size: 10pt; display:none;">
+                            @foreach (var column in Model.Schema[table.Key])
+                            {
+                                @: - @column.Name
+                                <span style="color: #666;">@column.DataType</span><br />
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="span9">
+                <aside>
+                <div style="padding: 5px 5px 5px 15px; margin:20px 30px 5px 0;background:#f5f5f5;">
+                    This page highlights the flexibility of Spark<sup>TM</sup> 4.5. 
+                    Enter any ad-hoc SQL query (including select, insert, update, delete) and you will see the results. 
+                    To assist with building SQL, table and column details are posted on the left. 
+                    Click on a table name to see its columns.
+                    Several built-in queries are available by selecting the dropdown next to the Submit and Reset buttons. 
+                    Ad hoc queries are useful and powerful, but for security reasons we do not recommend deploying 
+                    this functionality to a public Internet site.
+                    </div>
+                </aside>
+                <div style="padding: 20px 0px 20px 0px;">
+                    <div style="padding-bottom:4px;">
+                        Query&nbsp; <span id="description" style="color:orange; font-style:italic;">Enter your sql below</span>
+                    </div>
+                    <form method="post">
+                        @Html.AntiForgeryToken()
+
+                        <textarea name="sql" id="sql" rows="9" class="span8">@Model.Sql</textarea>
+                        <br />
+
+                        <input type="submit" class="btn" value="Submit" />
+                        <input id="clear" type="button" class="btn" value="Reset" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Built-in queries&nbsp;&nbsp;
+                        <select id="queries" style="margin-top:10px;">
+                            <option >-- select --</option>
+                            @foreach (var builtin in Model.Builtins)
+                            {
+                                <option 
+                                @if (builtin.Id == Model.CurrentBuiltin)
+                                {
+                                    @: selected="selected"
+                                }
+                                value="@builtin.Id">@builtin.Text</option>
+                            }
+                        </select>
+                        <input type="hidden" id="currentBuiltin" name="currentBuiltin" value="@Model.CurrentBuiltin" />
+                    </form>
+                     @foreach (var builtin in Model.Builtins)
+                     {
+                         <input type="hidden" id="@(builtin.Id)sql" value="@builtin.Sql" />
+                         <input type="hidden" id="@(builtin.Id)description" value="@builtin.Description" />
+                     }
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="results" class="span12">
+                @if (Model.Exception != null)
+                {
+                    @: <strong>Exception</strong>:<br />
+                    <div style="color: #333; padding:0 20px 30px 20px;font-size:10pt;">
+                        @Model.Exception
+                    </div>
+                }
+                else if (Model.Results.Count > 0)
+                {
+                    bool first = true;
+                    
+                    @*<strong>Results</strong>*@<br />
+                    <table class="table" style="width: 920px; font-size: 10pt;">
+                        @foreach (var result in Model.Results)
+                        {
+                            if (first)
+                            {
+                            <tr>
+                                @foreach (var item in result)
+                                {
+                                    <th>@item</th>
+                                }
+                            </tr>
+                                first = false;
+                            }
+                            else
+                            {
+                            <tr>
+                                @foreach (var item in result)
+                                {
+                                    <td>@item</td>
+                                }
+                            </tr>
+                            }
+                        }
+                    </table>
+                }
+                else
+                {
+                    <div style="height:400px;color:#aaa;padding-left:20px;">no records were found</div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+   
+   <script type="text/javascript">
+
+       // to learn more about JavaScript and jQuery Design Patterns please
+       // see our "Pro JavaScript and jQuery Patterns" package which is available 
+       // on our website at www.dofactory.com
+
+
+       // ** namespace pattern 
+       // ** revealing module pattern
+       // ** singleton pattern
+       Patterns.namespace("Art").Adhoc = (function () {
+
+           var activateControls = function () {
+
+               // clear button
+
+               $("#clear").on("click", function () {
+
+                   $("#sql").val("");
+                   $("#description").html("Enter your sql below");
+                   $("#currentBuiltin").val("");
+
+                   $("#results").html("<div style='height:400px;color:#aaa;padding-left:20px;'>no results yet</div>");
+                   $("option:selected", "select").removeAttr("selected");
+               });
+
+               // display column names when clicked on table name
+
+               $("a[id^='table']").on("click", function () {
+                   var id = "#" + $(this).attr("id").replace("table", "columns");
+                   $(id).slideToggle(500);
+               });
+
+               // dropdown control with built-in queries
+
+               $("#queries").on('change', function () {
+                   var value = $(this).val();
+
+                   var sql = $("#" + value + "sql").val();
+                   var description = $("#" + value + "description").val();
+
+                   $("#sql").val(sql);
+                   $("#description").html(description);
+                   $("#currentBuiltin").val(value);
+               });
+
+           };
+
+           var start = function () {
+               activateControls();
+           };
+
+           // the revealing part of the revealing module pattern
+           return { start: start };
+       })();
+
+       $(function () {
+
+           // ** facade pattern
+           var adhoc = Patterns.Art.Adhoc;
+           adhoc.start();
+
+       });
+   </script>
+}

@@ -1,0 +1,275 @@
+﻿@model Art.Web.Areas.Shop.Models.CartModel
+
+@{
+    ViewBag.Title = "Cart";
+
+    string checkoutMessage = null;
+
+    if (!CurrentUser.IsAuthenticated)
+    {
+        checkoutMessage = "Please login or sign up before going to checkout.";
+    }
+    else if (Model.GrandTotal == 0)
+    {
+        checkoutMessage = "There are no items in your cart";
+    }
+
+
+    int count = 0;
+}
+
+<div class="row row-first box-noborder">
+    <div class="span12">
+        <div class="row">
+            <div class="span9">
+
+                <form method="put">
+                    <input type="hidden" name="id" id="id" value="" />
+                    <input type="hidden" name="quantity" id="quantity" value="" />
+                </form>
+
+                <table style="margin:20px 0 0 0px">
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="background-color: #d9dee7; width: 480px; height: 28px;">Art Work</th>
+                            <th style="background-color: #d9dee7; width: 80px;">Unit Price</th>
+                            <th style="background-color: #d9dee7; width: 80px;">Quantity</th>
+                            <th style="background-color: #d9dee7; width: 80px;">Subtotal</th>
+                            <th style="background-color: #d9dee7; width: 80px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6">&nbsp;</td>
+                        </tr>
+                        @foreach (var item in Model.Items)
+                        {
+                            count++;
+                            
+                            <tr id="row@(item.Id)">
+                                
+                                
+                                <td style="text-align: center; padding: 0px 5px; width: 95px;">
+                                    <img src="/Images/thumbnails/@item.ProductImage" class="img-small" alt="">
+                                </td>
+                                <td style="vertical-align: top; padding: 0 0 0 5px; width: 300px;">
+                                    <strong>@item.ProductTitle</strong><br />
+                                    <i>by</i> @item.ProductArtistName
+                                    <br />
+
+                                </td>
+                                <td style="text-align: center; font-weight:bold;">
+                                    <span id="unitprice_@(item.Id)">@string.Format("{0:C0}", item.Price)</span>
+                                    <input type="hidden" id="hidden_unitprice_@(item.Id)" value="@item.Price" />
+                                </td>
+                                <td style="text-align: center;">
+                                    <select name="quantity" style="width:60px;">
+                                        @for (int i = 1; i < Math.Max(6, item.Quantity + 1); i++)
+                                        {
+                                            if (item.Quantity == i)
+                                            {
+                                                <option selected>@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option>@i</option>
+                                            }
+                                        }
+                                    </select>
+                                    <input type="hidden" id="hidden_quantity_@(item.Id)" value="@item.Quantity" />
+
+                                </td>
+                                <td style="text-align: center;font-weight:bold;">
+                                    <span id="subtotal_@(item.Id)">@string.Format("{0:C0}", item.SubTotal)</span>
+                                    <input type="hidden" id="hidden_subtotal_@(item.Id)" value="@item.SubTotal" />
+                                </td>
+                                <td style="text-align: center;">
+                                    <a class="remove" href='javascript:void(0);'>Remove</a>
+                                </td>
+                            </tr>  
+                            <tr>
+                                <td colspan="6">
+                                    <hr />
+                                </td>
+                            </tr>
+                        }
+
+                        @if (count == 0)
+                        {
+                            <tr>
+                                <td colspan="6" style="text-align:center; padding:40px; height:150px;color:#777;">
+                                    <h4>There are no items in your cart</h4>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="span3">
+                <div style="margin:20px 20px 0 0;padding:20px;background: #f5f5f5;"">
+                <a href="/products" class="btn btn-warning">Continue Shopping</a><br />
+                <div id="grand" style="border-bottom:2px solid #ccc;margin-top:100px;">
+                    Grand Total: &nbsp;&nbsp;&nbsp;&nbsp;<span id="grandtotal" style="font-weight:bold;">@string.Format("{0:C0}", Model.GrandTotal)</span>
+                    <input type="hidden" id="hidden_grandtotal" value="@Model.GrandTotal" />
+                </div>
+                <br />
+                    <a id="checkout" href="/checkout" class="btn btn-warning" data-toggle="popover" data-placement="left" 
+                        @if (checkoutMessage != null)
+                        {
+                            @: data-content="@checkoutMessage"
+                        }
+                        >To Checkout &nbsp;<i class="icon-play icon-white"></i></a>
+              </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+
+        // to learn more about JavaScript and jQuery Design Patterns please
+        // see our "Pro JavaScript and jQuery Patterns" package which is available 
+        // on our website at www.dofactory.com
+
+
+        // ** namespace pattern 
+        // ** revealing module pattern
+        // ** singleton pattern
+        Patterns.namespace("Art").Cart = (function () {
+            var start = function () {
+                initPlots();
+                initPie();
+            };
+
+            return { start: start };
+        })();
+
+
+        $(function () {
+
+            var utils = Patterns.Art.Utils;
+            var app = Patterns.Art.App;
+
+            var isauthenticated = $("#checkout").data("content") == null;
+            if (!isauthenticated) $("#checkout").popover();
+
+            // $('#element').popover('destroy')
+            $("#checkout").on("click", function (event) {
+                if (!isauthenticated)
+                    utils.stopEvent(event);
+                if ($("#hidden_grandtotal").val() == 0)
+                    utils.stopEvent(event);
+            });
+
+            // quantity change
+            $("select[name='quantity']").on("change", function () {
+
+                // get item id
+                var itemId = $(this).closest("tr").attr("id").substr(3);
+
+                // get original values
+                var unitPrice = $("#hidden_unitprice_" + itemId).val();
+                var oldQuantity = $("#hidden_quantity_" + itemId).val();
+                var oldSubTotal = $("#hidden_subtotal_" + itemId).val();
+                var oldGrandTotal = $("#hidden_grandtotal").val();
+
+                // compute new values
+                var newQuantity = $(this).val();
+                var newSubTotal = newQuantity * unitPrice;
+                var newGrandTotal = oldGrandTotal - oldSubTotal + newSubTotal;
+
+                // assign new values
+                $("#hidden_subtotal_" + itemId).val(newSubTotal);
+                $("#hidden_grandtotal").val(newGrandTotal);
+
+                $("#subtotal_" + itemId).html(utils.toMoney(newSubTotal, 0));
+
+                // animate new grand total
+                $("#grand").fadeOut(500, function () {
+                    $("#grandtotal").html(utils.toMoney(newGrandTotal, 0));
+                    $(this).fadeIn(500);
+                });
+
+                // submit to server
+                $("#id").val(itemId);
+                $("#quantity").val(newQuantity);
+
+                var $form = $("form");
+                var options = {
+                    url: $form.attr("action"),
+                    type: $form.attr("method"),
+                    data: $form.serialize()
+                };
+
+                // CQRS: fire and forget call
+                $.ajax(options);
+            });
+
+            // delete item
+            $(".remove").on("click", function (event) {
+
+                // get item id
+                var itemId = $(this).closest("tr").attr("id").substr(3);
+
+                // get original values
+                var oldSubTotal = $("#hidden_subtotal_" + itemId).val();
+                var oldGrandTotal = $("#hidden_grandtotal").val();
+
+                // compute and assign new grand total
+                var newGrandTotal = oldGrandTotal - oldSubTotal;
+                $("#hidden_grandtotal").val(newGrandTotal);
+
+                // animate new grand total
+                $("#grand").fadeOut(500, function () {
+                    $("#grandtotal").html(utils.toMoney(newGrandTotal, 0));
+                    $(this).fadeIn(500);
+                });
+
+                if (isauthenticated) {
+                    if (newGrandTotal == 0) {
+                        $("#checkout").data("content", "There are no items in your cart");
+                        $("#checkout").popover();
+                    }
+                    else {
+                        $("#checkout").popover('destroy');
+                    }
+                }
+
+                // update cart in menu bar
+                app.updateCartOnPage(-1);
+
+                // animate row away
+                $(this).closest("tr").fadeOut(1000, function () {
+                    $(this).next().remove();
+                    $(this).remove();
+                });
+
+                // submit to server
+                $("#id").val(itemId);
+                $("#quantity").val(0);
+
+                var $form = $("form");
+
+                var options = {
+                    url: $form.attr("action"),
+                    type: "DELETE",
+                    data: $form.serialize()
+                };
+
+                // CQRS: fire and forget call
+                $.ajax(options);
+
+                return utils.stopEvent(event);
+            });
+
+        });
+
+    </script>
+}
+

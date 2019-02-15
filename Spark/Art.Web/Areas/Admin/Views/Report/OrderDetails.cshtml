@@ -1,0 +1,81 @@
+﻿@model Art.Web.Areas.Admin.Models.ReportOrderDetailsModel
+
+@{
+    ViewBag.Title = "OrderDetails";
+    DateTime dt = ((DateTime)Model.OrderDate);
+}
+
+<div class="row row-backlink">
+    <div class="span10">
+        <a class="back-link" href="@Model.HttpReferer"><i class=" icon-chevron-left"></i>back to orders</a>
+    </div>
+</div>
+
+<div class="row box-noborder" style="padding-top: 30px;">
+    <div class="span4">
+        <div style="margin: 20px 20px 40px 20px; padding: 15px 0 20px 20px; background: #f5f5f5; height: 300px;">
+
+            <table class="table" style="width: 210px;">
+                <tr>
+                    <td><h4>Order #</h4></td>
+                    <td><h4>@Model.OrderNumber</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td>@dt.ToShortDateString()<br />
+                        @dt.ToShortTimeString()
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total:</td>
+                    <td><h4>@string.Format("{0:C0}", Model.TotalPrice) </h4></td>
+                </tr>
+                <tr>
+                    <td>Customer:</td>
+                    <td>@(Model.FirstName + " " + Model.LastName)</td>
+                </tr>
+            </table>
+
+
+        </div>
+    </div>
+    <div class="span8">
+
+        <table class="table table-noline" style="width:520px;">
+            <thead>
+                <tr>
+                    <th colspan="2">Art Work</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var detail in Model.OrderDetails)
+                {
+                    <tr>
+                        <td style="text-align: center; padding: 0px 5px 20px 5px; width: 95px;">
+                            <img src="/Images/thumbnails/@detail.ProductImage" class="img-small" alt="">
+                        </td>
+                        <td style="vertical-align: top; padding: 0 0 0 5px; width: 250px;">
+                            <strong>@detail.ProductTitle</strong><br />
+                            <i>by</i> @detail.ProductArtist
+                        </td>
+                        <td style="text-align: center;">
+                            @string.Format("{0:C0}", detail.Price)
+                        </td>
+                        <td style="text-align: center;">
+                            @detail.Quantity
+                        </td>
+                        <td style="text-align: center;">
+                            @string.Format("{0:C0}", detail.SubTotal)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
